@@ -1,0 +1,24 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "0.1.0",
+	"FriendlyName": "BulkManager",
+	"Description": "Plugin for managing a bulk of actors with data through programmatic relevancy.",
+	"Category": "Actor Management",
+	"CreatedBy": "getnamo",
+	"CreatedByURL": "http://getnamo.com",
+	"DocsURL": "https://github.com/getnamo/BulkManager-Unreal",
+	"MarketplaceURL": "",
+	"SupportURL": "https://github.com/getnamo/BulkManager-Unreal/issues",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "BulkManager",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
