@@ -5,18 +5,23 @@
 
 FBMEntityData::FBMEntityData()
 {
-	Clear();
+	Reset();
 }
 
-void FBMEntityData::Clear()
+void FBMEntityData::Reset()
 {
-	Component = nullptr;
+	BulkComponent = nullptr;
 	ObjectData = nullptr;
+	
+	BulkState = EBMBulkState::UNKNOWN;
 }
 
-FBulkEntitySettings::FBulkEntitySettings()
+FBMEntitySettings::FBMEntitySettings()
 {
 	ManagerId = TEXT("Default");
+	BulkRadius = 1000.f;	//default 10m
+	VirtualRadius = 100000.f;	//default 1000m
+	LODSRadius.Empty();			//default no lod support
 }
 
 UBulkEntityComponent::UBulkEntityComponent(const FObjectInitializer &Init) : UActorComponent(Init)
@@ -43,16 +48,27 @@ void UBulkEntityComponent::BeginPlay()
 
 	TSharedPtr<FBulkManagerCore> Manager = FBulkManagerCore::GetManager(Settings.ManagerId);
 
+	//Have we set our bulk origin component? if not pick root of parent
+	if (!EntityData.OriginSceneComponent)
+	{
+		EntityData.OriginSceneComponent = GetOwner()->GetRootComponent();
+	}
+
+	//If added via component and currently unknown, switch to real
+	if (EntityData.BulkState == EBMBulkState::UNKNOWN)
+	{
+		EntityData.BulkState = EBMBulkState::REAL;
+	}
+
 	Manager->AddEntity(this);
 }
 
 void UBulkEntityComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	Super::EndPlay(EndPlayReason);
-
 	TSharedPtr<FBulkManagerCore> Manager = FBulkManagerCore::GetManager(Settings.ManagerId);
 
 	Manager->RemoveEntity(this);
+	EntityData.Reset();
 
-	EntityData.Clear();
+	Super::EndPlay(EndPlayReason);
 }

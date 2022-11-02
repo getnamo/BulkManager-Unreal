@@ -14,4 +14,6 @@ class BULKMANAGER_API UBulkManagerBPLibrary : public UBlueprintFunctionLibrary
 
 public:
 
+	UFUNCTION(BlueprintCallable, Category = "Bulk Manager - Relevancy")
+	static void SetBulkViewComponent(USceneComponent* ViewComponent, const FString& ForManager = TEXT("Default"));
 };
