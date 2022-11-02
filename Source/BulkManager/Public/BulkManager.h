@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 
-class FBulkManagerModule : public IModuleInterface
+class BULKMANAGER_API FBulkManagerModule : public IModuleInterface
 {
 public:
 
