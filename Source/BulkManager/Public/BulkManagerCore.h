@@ -54,10 +54,6 @@ public:
 
 	//Properties
 
-	/** Unique Id */
-	FString ManagerId;
-
-
 	//Functions
 	
 	//Entities
