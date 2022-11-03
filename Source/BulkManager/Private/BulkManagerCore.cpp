@@ -30,7 +30,12 @@ void FBulkManagerCore::Shutdown()
 {
 	//Shutdown any threads
 
-	//Clear managers
+	//Clear entities and managers
+	for (auto Pair : Managers)
+	{
+		Pair.Value->ClearEntities();
+	}
+
 	Managers.Empty();
 }
 
@@ -54,6 +59,15 @@ void FBulkManagerCore::RemoveEntity(UBulkEntityComponent* Entity)
 		FTSTicker::GetCoreTicker().RemoveTicker(Data.EventLoop.DelegateHandle);
 		Data.EventLoop.DelegateHandle = FTSTicker::FDelegateHandle();
 	}
+}
+
+
+void FBulkManagerCore::ClearEntities()
+{
+	Data.Entities.Empty();
+
+	FTSTicker::GetCoreTicker().RemoveTicker(Data.EventLoop.DelegateHandle);
+	Data.EventLoop.DelegateHandle = FTSTicker::FDelegateHandle();
 }
 
 void FBulkManagerCore::SetViewComponent(USceneComponent* InViewComponent)

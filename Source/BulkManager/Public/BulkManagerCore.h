@@ -60,6 +60,8 @@ public:
 	void AddEntity(UBulkEntityComponent* Entity);
 	void RemoveEntity(UBulkEntityComponent* Entity);
 
+	void ClearEntities();
+
 	//Origin relevancy
 	void SetViewComponent(USceneComponent* InViewComponent);
 
