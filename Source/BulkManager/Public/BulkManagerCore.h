@@ -27,7 +27,9 @@ struct FBulkManagerData
 	//Settings
 	bool bSupportViewFrustumRelevancy;
 	bool bShouldTickOnGameThread;
-	float DefaultBulkRadius;
+
+	//defaults
+	FBMEntitySettings DefaultEntitySettings;
 
 	FBMTickEventLoopData EventLoop;
 

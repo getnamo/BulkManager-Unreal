@@ -118,44 +118,49 @@ void FBulkManagerCore::RelevancyTick()
 		//Test Distance
 		double Distance = (ViewTransform.GetTranslation() - EntityTransform.GetTranslation()).Size();
 
+		//default
+		float BulkRadius = Data.DefaultEntitySettings.BulkRadius;
+		float VirtualRadius = Data.DefaultEntitySettings.VirtualRadius;
+
 		if (Entity.BulkComponent)
 		{
-			//for now we only support real and bulk, TODO: lod support
-			if (Distance > Entity.BulkComponent->Settings.BulkRadius)
+			BulkRadius = Entity.BulkComponent->Settings.BulkRadius;
+			VirtualRadius = Entity.BulkComponent->Settings.VirtualRadius;
+		}
+		else
+		{
+			//TODO: check group radius override
+		}
+
+		//for now we only support real and bulk, TODO: lod support
+		if (Distance > BulkRadius)
+		{
+			if (Distance > VirtualRadius)
 			{
-				if (Distance > Entity.BulkComponent->Settings.VirtualRadius)
+				//Should be in virtual state
+				if (Entity.BulkState != EBMBulkState::VIRTUAL)
 				{
-					//Should be in virtual state
-					if (Entity.BulkState != EBMBulkState::VIRTUAL)
-					{
-						Entity.BulkState = EBMBulkState::VIRTUAL;
-						Entity.BulkComponent->OnStateChanged.Broadcast(Entity.BulkState);
-					}
-				}
-				else
-				{
-					//Should be in bulk state
-					if (Entity.BulkState != EBMBulkState::BULK)
-					{
-						Entity.BulkState = EBMBulkState::BULK;
-						Entity.BulkComponent->OnStateChanged.Broadcast(Entity.BulkState);
-					}
+					Entity.BulkState = EBMBulkState::VIRTUAL;
+					Entity.BulkComponent->OnStateChanged.Broadcast(Entity.BulkState);
 				}
 			}
 			else
 			{
-				if (Entity.BulkState != EBMBulkState::REAL)
+				//Should be in bulk state
+				if (Entity.BulkState != EBMBulkState::BULK)
 				{
-					Entity.BulkState = EBMBulkState::REAL;
+					Entity.BulkState = EBMBulkState::BULK;
 					Entity.BulkComponent->OnStateChanged.Broadcast(Entity.BulkState);
 				}
 			}
-		
 		}
 		else
 		{
-			//TODO
-			//Not an actor with bulk component. needs to be handled by group manager
+			if (Entity.BulkState != EBMBulkState::REAL)
+			{
+				Entity.BulkState = EBMBulkState::REAL;
+				Entity.BulkComponent->OnStateChanged.Broadcast(Entity.BulkState);
+			}
 		}
 
 		//TODO: test view frustrum
@@ -177,6 +182,5 @@ FBulkManagerData::FBulkManagerData()
 	EntityCounter = 0;
 	bSupportViewFrustumRelevancy = false;
 	ViewComponent = nullptr;
-	DefaultBulkRadius = 1000.f; //10m
 	bShouldTickOnGameThread = true;
 }
