@@ -20,7 +20,7 @@ TSharedPtr<FBulkManagerCore> FBulkManagerCore::GetManager(const FString& ForMana
 	else
 	{
 		TSharedPtr<FBulkManagerCore> Manager = MakeShareable(new FBulkManagerCore());
-		Managers[ForManagerId] = Manager;
+		Managers.Add(ForManagerId, Manager);
 		return Manager;
 	}
 }
