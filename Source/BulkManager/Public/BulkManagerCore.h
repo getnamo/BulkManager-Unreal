@@ -27,6 +27,7 @@ struct FBulkManagerData
 	//Settings
 	bool bSupportViewFrustumRelevancy;
 	bool bShouldTickOnGameThread;
+	bool bShouldAutoViewMainCharacter;
 
 	//defaults
 	FBMEntitySettings DefaultEntitySettings;
@@ -69,6 +70,9 @@ public:
 
 	FBulkManagerCore();
 	~FBulkManagerCore();
+
+	//Utility
+	static UWorld* GetPlayWorld();
 
 protected:
 	static TMap<FString, TSharedPtr<FBulkManagerCore>> Managers;

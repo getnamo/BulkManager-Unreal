@@ -114,8 +114,27 @@ void FBulkManagerCore::RelevancyTick()
 {
 	if (!Data.ViewComponent)
 	{
-		//TODO: warn
-		return;
+		if (Data.bShouldAutoViewMainCharacter)
+		{
+			UWorld* World = GetPlayWorld();
+			if (!World)
+			{
+				return;
+			}
+
+			APawn* Pawn = World->GetFirstPlayerController()->GetPawn();
+			if (!Pawn)
+			{
+				return;
+			}
+
+			Data.ViewComponent = Pawn->GetRootComponent();
+		}
+		else
+		{
+			//TODO: warn
+			return;
+		}
 	}
 
 	const FTransform& ViewTransform = Data.ViewComponent->GetComponentTransform();
@@ -192,10 +211,38 @@ FBulkManagerCore::~FBulkManagerCore()
 
 }
 
+
+UWorld* FBulkManagerCore::GetPlayWorld()
+{
+	UWorld* World = GEngine->GetCurrentPlayWorld();
+
+	if (!World)
+	{
+		World = GEngine->GetWorld();
+
+		if (!World)
+		{
+			FWorldContext* WorldContext = GEngine->GetWorldContextFromGameViewport(GEngine->GameViewport);
+
+			World = WorldContext->World();
+		}
+	}
+
+	//Check world type
+	if (!World ||
+		!(World->WorldType == EWorldType::Game ||
+			World->WorldType == EWorldType::PIE))
+	{
+		return nullptr;
+	}
+	return World;
+}
+
 FBulkManagerData::FBulkManagerData()
 {
 	EntityCounter = 0;
 	bSupportViewFrustumRelevancy = false;
 	ViewComponent = nullptr;
 	bShouldTickOnGameThread = true;
+	bShouldAutoViewMainCharacter = true;
 }

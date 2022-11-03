@@ -28,6 +28,7 @@ UBulkEntityComponent::UBulkEntityComponent(const FObjectInitializer &Init) : UAc
 {
 	bWantsInitializeComponent = true;
 	bAutoActivate = true;
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
 
