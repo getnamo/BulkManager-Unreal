@@ -112,6 +112,8 @@ FString FBulkManagerCore::NextId()
 //Main logic function
 void FBulkManagerCore::RelevancyTick()
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("RelevancyTick");
+
 	if (!Data.ViewComponent)
 	{
 		if (Data.bShouldAutoViewMainCharacter)

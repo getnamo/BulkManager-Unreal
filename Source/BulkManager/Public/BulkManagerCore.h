@@ -4,6 +4,8 @@
 #include "CoreMinimal.h"
 #include "BulkEntityComponent.h"
 
+DECLARE_STATS_GROUP(TEXT("BulkManager"), STATGROUP_BulkManager, STATCAT_Advanced);
+
 //Event loop data if using game thread ticking
 struct FBMTickEventLoopData
 {
