@@ -1,6 +1,7 @@
 // Copyright 2022-current Getnamo. All Rights Reserved.
 
 #include "BulkEntityComponent.h"
+#include "BulkInstanceManagerBase.h"
 #include "BulkManagerCore.h"
 
 FBMEntityData::FBMEntityData()
@@ -22,6 +23,8 @@ FBMEntitySettings::FBMEntitySettings()
 	BulkRadius = 1000.f;	//default 10m
 	VirtualRadius = 100000.f;	//default 1000m
 	LODSRadius.Empty();			//default no lod support
+	bUseInstanceManagerOnBulk = true;
+	BulkInstanceManager = UBulkInstanceManagerBase::StaticClass();
 }
 
 UBulkEntityComponent::UBulkEntityComponent(const FObjectInitializer &Init) : UActorComponent(Init)
@@ -53,12 +56,6 @@ void UBulkEntityComponent::BeginPlay()
 	if (!EntityData.OriginSceneComponent)
 	{
 		EntityData.OriginSceneComponent = GetOwner()->GetRootComponent();
-	}
-
-	//If added via component and currently unknown, switch to real
-	if (EntityData.BulkState == EBMBulkState::UNKNOWN)
-	{
-		EntityData.BulkState = EBMBulkState::REAL;
 	}
 
 	Manager->AddEntity(this);

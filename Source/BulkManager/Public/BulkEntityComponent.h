@@ -39,6 +39,7 @@ struct BULKMANAGER_API FBMEntityData
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bulk Manager - Entity Data")
 	FString EntityId;
 
+	//Change if you want a different start state
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bulk Manager - Entity Data")
 	EBMBulkState BulkState;
 
@@ -54,8 +55,22 @@ struct BULKMANAGER_API FBMEntitySettings
 {
 	GENERATED_USTRUCT_BODY()
 
+	//For bulk component
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bulk Manager - Entity Settings")
 	FString ManagerId;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bulk Manager - Entity Settings")
+	bool bUseInstanceManagerOnBulk;
+
+	//for instance static mesh types
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bulk Manager - Entity Data")
+	UClass* BulkInstanceManager;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bulk Manager - Entity Data")
+	AActor* RealType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bulk Manager - Entity Data")
+	UStaticMesh* ISMeshType;
 
 	//When this entity should be managed by a group handler (e.g. instance static meshes)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bulk Manager - Entity Data")
